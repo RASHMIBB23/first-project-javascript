@@ -1,11 +1,13 @@
 import express from "express";
 const app = express();
 const port = 3000;
+
 app.use(express.json());
 
 let teaData = [];
 let nextId = 1;
-//add a new tea
+
+// Add a new tea
 app.post("/teas", (req, res) => {
   const { name, price } = req.body;
   const newTea = { id: nextId++, name, price };
@@ -13,41 +15,45 @@ app.post("/teas", (req, res) => {
   res.status(201).send(newTea);
 });
 
-//get all tea
+// Get all teas
 app.get("/teas", (req, res) => {
   res.status(200).send(teaData);
 });
 
-//get all tea with id
-app.get("/tease/:id", (req, res) => {
-  const tea = teaData.find((t) => t.id === pareseInt(req.params.id));
+// Get tea by id
+app.get("/teas/:id", (req, res) => {
+  // <-- fixed route
+  const tea = teaData.find((t) => t.id === parseInt(req.params.id)); // <-- fixed parseInt
   if (!tea) {
     return res.status(404).send("tea not found");
   }
   res.status(200).send(tea);
 });
 
-//update tea
-app.put("/reas/:id", (req, res) => {
-  const tea = teaData.find((t) => t.id === pareseInt(req.params.id));
+// Update tea
+app.put("/teas/:id", (req, res) => {
+  // <-- fixed route
+  const tea = teaData.find((t) => t.id === parseInt(req.params.id)); // <-- fixed parseInt
   if (!tea) {
     return res.status(404).send("tea not found");
   }
   const { name, price } = req.body;
   tea.name = name;
   tea.price = price;
-  res.send(200).send(tea);
+  res.status(200).send(tea); // <-- fixed status
 });
-//delete tea
 
+// Delete tea
 app.delete("/teas/:id", (req, res) => {
-  const index = teaData.findIndex((t) => t.id == parseInt(req.params.id));
-  if (index == -1) {
+  const index = teaData.findIndex((t) => t.id === parseInt(req.params.id));
+  if (index === -1) {
     return res.status(404).send("tea not found");
   }
   teaData.splice(index, 1);
   return res.status(204).send("deleted");
 });
+
+// Start server
 app.listen(port, () => {
-  console.log(`server is running at port :${port}...`);
+  console.log(`Server is running at port: ${port}...`);
 });
