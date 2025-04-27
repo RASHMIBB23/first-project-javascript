@@ -2,6 +2,7 @@
   "name": "my_app",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "echo \"node index.js"
   },
@@ -11,5 +12,8 @@
   ],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
